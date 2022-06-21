@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace UnityNetworkLoop
 {
-    public class ServerManager : NetworkManager
+    public class ServerDriverManager : NetworkDriverManager
     {
         // TODO: separate port for every room
 

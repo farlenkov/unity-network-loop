@@ -8,11 +8,11 @@ using System;
 
 namespace UnityNetworkLoop
 {
-    public abstract class NetworkManager : MonoBehaviour
+    public abstract class NetworkDriverManager : MonoBehaviour
     {
         // STATIC 
 
-        public static NetworkManager Current { get; private set; }
+        public static NetworkDriverManager Current { get; private set; }
 
         // OBJECT
 

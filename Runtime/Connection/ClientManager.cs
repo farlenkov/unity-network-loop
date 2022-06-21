@@ -7,7 +7,7 @@ using UnityEngine.Profiling;
 
 namespace UnityNetworkLoop
 {
-    public class ClientManager : NetworkManager
+    public class ClientDriverManager : NetworkDriverManager
     {
         public void Connect(NetworkEndPoint endpoint)
         {

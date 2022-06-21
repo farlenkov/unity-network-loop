@@ -9,7 +9,7 @@ namespace UnityNetworkLoop
 {
     public class NetworkLoop : GameLoop
     {
-        public NetworkManager Net => NetworkManager.Current;
+        public NetworkDriverManager Net => NetworkDriverManager.Current;
         public NetworkMessageReaderList Readers;
         public NativeParallelHashMap<ushort, Entity> EntityIndex;
         public GameLoopFuncList SyncUpdate { get; private set; }
