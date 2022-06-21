@@ -18,7 +18,7 @@ namespace UnityNetworkLoop
 
         public NetworkDriver Driver { get; private set; }
         public NetworkPipeline ReliablePipeline { get; private set; }
-        public NativeList<NetworkConnection> Connections { get; protected set; }
+        public NativeList<NetworkConnection> Connections { get; private set; }
 
         // START
 
@@ -31,8 +31,18 @@ namespace UnityNetworkLoop
 
         protected void CreateNetworkDriver()
         {
+            // TODO: limit connection count
+
             Driver = NetworkDriver.Create();
             ReliablePipeline = Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
+        }
+
+        protected void CreateConnections(int count)
+        {
+            if (Connections.IsCreated)
+                Connections.Dispose();
+
+            Connections = new NativeList<NetworkConnection>(count, Allocator.Persistent);
         }
 
         // DESTROY

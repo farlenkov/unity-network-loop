@@ -12,7 +12,8 @@ namespace UnityNetworkLoop
         public void Connect(NetworkEndPoint endpoint)
         {
             var connection = Driver.Connect(endpoint);
-            Connections = new NativeList<NetworkConnection>(1, Allocator.Persistent);
+
+            CreateConnections(1);
             Connections.Add(connection);
         }
     }
