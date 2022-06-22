@@ -15,45 +15,17 @@ namespace UnityNetworkLoop
 
         void Update(float obj)
         {
-            var driver = Loop.Net.Driver;
-            var connections = Loop.Net.Connections;
-
-            for (int i = 0; i < connections.Length; i++)
-            {
-                var connection = connections[i];
-
-                DataStreamReader reader;
-                NetworkEvent.Type cmd;
-
-                while ((cmd = driver.PopEventForConnection(connection, out reader)) != NetworkEvent.Type.Empty)
-                {
-                    switch (cmd)
-                    {
-                        case NetworkEvent.Type.Connect:
-                            Debug.Log("Connected");
-                            break;
-
-                        case NetworkEvent.Type.Data:
-
-                            if (reader.IsCreated)
-                                OnReceiveMessage(ref connection, ref reader);
-                            else
-                                Debug.LogError("reader.IsCreated == false"); // ?
-
-                            break;
-
-                        case NetworkEvent.Type.Disconnect:
-                            Debug.Log("Disconnected");
-                            break;
-                    }
-                }
-            }
+            Loop.Net.ReadEvents(OnNetworkEvent);
         }
 
-        void OnReceiveMessage(
-            ref NetworkConnection connection, 
-            ref DataStreamReader reader)
+        void OnNetworkEvent(
+            NetworkEvent.Type event_type,
+            NetworkConnection connection,
+            DataStreamReader reader)
         {
+            if (event_type != NetworkEvent.Type.Data)
+                return;
+
             var readers = Loop.Readers;
 
             while (reader.GetBytesRead() < reader.Length)

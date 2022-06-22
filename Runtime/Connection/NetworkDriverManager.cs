@@ -25,6 +25,7 @@ namespace UnityNetworkLoop
         void Awake()
         {
             Current = this;
+
             DontDestroyOnLoad(gameObject);
             CreateNetworkDriver();
         }
@@ -35,6 +36,45 @@ namespace UnityNetworkLoop
 
             Driver = NetworkDriver.Create();
             ReliablePipeline = Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
+        }
+
+        public void ReadEvents(Action<NetworkEvent.Type, NetworkConnection, DataStreamReader> callback)
+        {
+            var driver = Driver;
+            var connections = Connections;
+
+            for (int i = 0; i < connections.Length; i++)
+            {
+                var connection = connections[i];
+
+                DataStreamReader reader;
+                NetworkEvent.Type cmd;
+
+                while ((cmd = driver.PopEventForConnection(connection, out reader)) != NetworkEvent.Type.Empty)
+                {
+                    switch (cmd)
+                    {
+                        case NetworkEvent.Type.Connect:
+                            Debug.Log("Connected");
+                            callback(cmd, connection, default);
+                            break;
+
+                        case NetworkEvent.Type.Data:
+
+                            if (reader.IsCreated)
+                                callback(cmd, connection, reader);
+                            else
+                                Debug.LogError("reader.IsCreated == false"); // ?
+
+                            break;
+
+                        case NetworkEvent.Type.Disconnect:
+                            Debug.Log("Disconnected");
+                            callback(cmd, connection, default);
+                            break;
+                    }
+                }
+            }
         }
 
         protected void CreateConnections(int count)

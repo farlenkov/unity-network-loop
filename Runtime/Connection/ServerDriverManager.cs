@@ -11,18 +11,21 @@ namespace UnityNetworkLoop
     {
         // TODO: separate port for every room
 
-        public void Listen(
+        public bool Listen(
             NetworkEndPoint endpoint,
             int max_connections)
         {
             if (Driver.Bind(endpoint) != 0)
             {
                 Debug.LogError("Failed to bind to port 9000");
+                return false;
             }
             else
             {
-                Driver.Listen();
+                var result = Driver.Listen();
                 CreateConnections(max_connections);
+
+                return result == 0;
             }
         }    
     }
