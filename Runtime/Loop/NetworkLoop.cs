@@ -13,11 +13,13 @@ namespace UnityNetworkLoop
         public NetworkMessageReaderList Readers;
         public NativeParallelHashMap<ushort, Entity> EntityIndex;
         public GameLoopFuncList SyncUpdate { get; private set; }
+        public List<NetworkMessage> SendMessages { get; private set; }
         public int Tick { get; internal set; }
 
         public NetworkLoop(GameLoopRunner loopRunner) : base(loopRunner)
         {
             Readers = new NetworkMessageReaderList();
+            SendMessages = new List<NetworkMessage>();
             EntityIndex = new NativeParallelHashMap<ushort, Entity>(10000, Allocator.Persistent);
             SyncUpdate = new GameLoopFuncList();
         }

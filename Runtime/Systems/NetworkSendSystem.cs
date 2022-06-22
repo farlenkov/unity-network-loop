@@ -40,6 +40,19 @@ namespace UnityNetworkLoop
                 SortSendData(connection);
                 Send(driver, connection);
             }
+
+            ClearSendMessages();
+        }
+
+        void ClearSendMessages()
+        {
+            for (var i = 0; i < Loop.SendMessages.Count; i++)
+            {
+                var msg = Loop.SendMessages[i];
+                msg.Data.Dispose();
+            }
+
+            Loop.SendMessages.Clear();
         }
 
         void Send(
@@ -47,6 +60,30 @@ namespace UnityNetworkLoop
             NetworkConnection connection)
         {
             var writer = default(DataStreamWriter);
+
+            // SEND NetworkMessage
+
+            for (var i = 0; i < Loop.SendMessages.Count; i++)
+            {
+                var message = Loop.SendMessages[i];
+
+                if (!writer.IsCreated)
+                {
+                    Profiler.BeginSample("NetworkDriver.BeginSend");
+                    driver.BeginSend(connection, out writer);
+                    Profiler.EndSample();
+                }
+
+                Profiler.BeginSample("NativeArray<byte>.GetSubArray");
+                var sub_array = message.Data.GetSubArray(0, message.Length);
+                Profiler.EndSample();
+
+                Profiler.BeginSample("DataStreamWriter.WriteBytes");
+                writer.WriteBytes(sub_array);
+                Profiler.EndSample();
+            }
+
+            // SEND SendData
 
             for (var i = 0; i < SendItems.Count; i++)
             {
