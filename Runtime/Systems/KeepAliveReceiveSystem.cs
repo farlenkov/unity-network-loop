@@ -21,7 +21,6 @@ namespace UnityNetworkLoop
         {
             // keep me empty
             // id is the only data we get in this message
-            Debug.LogFormat("ReadKeepAliveMessage {0}", id);
         }
     }
 }
