@@ -17,11 +17,11 @@ namespace UnityNetworkLoop
         {
             var connections = Loop.Net.Connections;
             var driver = Loop.Net.Driver;
-            NetworkConnection c;
+            NetworkConnection connection;
 
-            while ((c = driver.Accept()) != default(NetworkConnection))
+            while ((connection = driver.Accept()) != default(NetworkConnection))
             {
-                connections.Add(c);
+                connections.Add(connection);
                 Debug.Log("Accepted a connection");
             }
         }
