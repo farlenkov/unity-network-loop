@@ -22,6 +22,7 @@ namespace UnityNetworkLoop
             while ((connection = driver.Accept()) != default(NetworkConnection))
             {
                 connections.Add(connection);
+                Loop.NewConnections.Add(connection);
                 Debug.Log("Accepted a connection");
             }
         }

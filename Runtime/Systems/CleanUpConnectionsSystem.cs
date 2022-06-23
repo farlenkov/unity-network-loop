@@ -23,6 +23,7 @@ namespace UnityNetworkLoop
                 if (!connection.IsCreated)
                 {
                     connections.RemoveAtSwapBack(--i);
+                    Loop.OldConnections.Add(connection);
                     continue;
                 }
             }
