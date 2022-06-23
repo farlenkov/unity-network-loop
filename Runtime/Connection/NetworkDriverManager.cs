@@ -38,6 +38,19 @@ namespace UnityNetworkLoop
             ReliablePipeline = Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
         }
 
+        protected void CreateConnections(int count)
+        {
+            if (Connections.IsCreated)
+                Connections.Dispose();
+
+            Connections = new NativeList<NetworkConnection>(count, Allocator.Persistent);
+        }
+
+        public void UpdateDriver()
+        {
+            Driver.ScheduleUpdate().Complete();
+        }
+
         public void ReadEvents(Action<NetworkEvent.Type, NetworkConnection, DataStreamReader> callback)
         {
             var driver = Driver;
@@ -77,14 +90,7 @@ namespace UnityNetworkLoop
             }
         }
 
-        protected void CreateConnections(int count)
-        {
-            if (Connections.IsCreated)
-                Connections.Dispose();
-
-            Connections = new NativeList<NetworkConnection>(count, Allocator.Persistent);
-        }
-
+       
         // DESTROY
 
         void OnDestroy()
