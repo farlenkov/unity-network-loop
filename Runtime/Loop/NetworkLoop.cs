@@ -8,11 +8,14 @@ using UnityGameLoop;
 
 namespace UnityNetworkLoop
 {
-    public class NetworkLoop : GameLoop
+    public abstract class NetworkLoop : GameLoop
     {
         public NetworkDriverManager Net => NetworkDriverManager.Current;
-        public NetworkMessageReaderList Readers;
+        public NetworkMessageReaderList Readers { get; private set; }
         public GameLoopFuncList SyncUpdate { get; private set; }
+
+        // DATA
+
         public int Tick { get; internal set; }
 
         public NativeParallelHashMap<ushort, Entity> EntityIndex;
@@ -24,9 +27,9 @@ namespace UnityNetworkLoop
         public NetworkLoop(GameLoopRunner loopRunner) : base(loopRunner)
         {
             Readers = new NetworkMessageReaderList();
-            SendMessages = new List<NetworkMessage>();
             SyncUpdate = new GameLoopFuncList();
 
+            SendMessages = new List<NetworkMessage>();
             EntityIndex = new NativeParallelHashMap<ushort, Entity>(10000, Allocator.Persistent);
             NewConnections = new List<NetworkConnection>();
             OldConnections = new List<NetworkConnection>();
