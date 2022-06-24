@@ -31,7 +31,7 @@ namespace UnityNetworkLoop
             while (reader.GetBytesRead() < reader.Length)
             {
                 var offset = reader.GetBytesRead();
-                var id = reader.ReadEntityID();
+                var id = reader.ReadID();
                 var reader_func = readers.GetReader(id);
 
                 if (reader_func == null)

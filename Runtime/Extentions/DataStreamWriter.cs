@@ -7,9 +7,17 @@ namespace UnityNetworkLoop
 {
     public static class DataStreamWriterExt
     {
-        public static bool WriteEntityID(this ref DataStreamWriter writer, ushort value)
+        public static bool WriteID(this ref DataStreamWriter writer, ushort value)
         {
             return writer.WriteUShort(value);
+        }
+
+        public static bool WriteVector3(this ref DataStreamWriter writer, Vector3 value)
+        {
+            return
+                writer.WriteFloat(value.x) &&
+                writer.WriteFloat(value.y) &&
+                writer.WriteFloat(value.z);
         }
     }
 }
