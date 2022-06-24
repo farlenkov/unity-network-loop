@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.Networking.Transport;
 using UnityEngine;
 
@@ -18,6 +19,13 @@ namespace UnityNetworkLoop
                 writer.WriteFloat(value.x) &&
                 writer.WriteFloat(value.y) &&
                 writer.WriteFloat(value.z);
+        }
+
+        public static bool WriteFloat2(this ref DataStreamWriter writer, float2 value)
+        {
+            return
+                writer.WriteFloat(value.x) &&
+                writer.WriteFloat(value.y);
         }
     }
 }
