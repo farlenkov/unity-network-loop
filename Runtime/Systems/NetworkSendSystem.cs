@@ -20,8 +20,6 @@ namespace UnityNetworkLoop
     {
         List<SendItem> SendItems = new List<SendItem>();
 
-        protected override bool UseSyncUpdate => true;
-
         protected override void OnUpdate()
         {
             var driver = Loop.Net.Driver;

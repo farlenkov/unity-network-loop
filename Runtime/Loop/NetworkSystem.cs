@@ -8,17 +8,11 @@ namespace UnityNetworkLoop
     public abstract class NetworkSystem<LOOP> : GameLoopSystem<LOOP> 
         where LOOP : NetworkLoop
     {
-        protected virtual bool UseSyncUpdate => false;
-
         protected override void Init()
         {
-            Loop.Start.Add(Start);            
+            Loop.Start.Add(Start);
+            Loop.SyncUpdate.Add(Update);
             Loop.Destroy.Add(Destroy);
-
-            if (UseSyncUpdate)
-                Loop.SyncUpdate.Add(Update);
-            else
-                Loop.Update.Add(Update);
         }
 
         void Start(float dt)
