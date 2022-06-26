@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityUtility;
 
 namespace UnityNetworkLoop
 {
-    public class NetworkMessageList : MonoBehaviour
+    public class NetworkMessageList
     {
         List<NetworkMessage> list;
 
