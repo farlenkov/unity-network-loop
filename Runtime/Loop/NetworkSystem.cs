@@ -8,6 +8,8 @@ namespace UnityNetworkLoop
     public abstract class NetworkSystem<LOOP> : GameLoopSystem<LOOP> 
         where LOOP : NetworkLoop
     {
+        public int Tick => Loop.Tick;
+
         protected override void Init()
         {
             Loop.Start.Add(Start);
