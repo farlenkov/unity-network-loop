@@ -15,10 +15,8 @@ namespace UnityNetworkLoop
         void Start(float dt)
         {
             var send = new SendData();
-            send.Create(2);
-
+            send.Init(2);
             send.Writer.WriteID(NetworkMessageType.KeepAlive);
-            send.Length = send.Writer.Length;
 
             var entity = EntityManager.CreateEntity(typeof(SendData));
             EntityManager.SetComponentData(entity, send);
