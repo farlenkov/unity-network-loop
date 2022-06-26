@@ -16,7 +16,7 @@ namespace UnityNetworkLoop
         public int Length => Writer.Length;
         public Dictionary<int, int> SyncTickByConnection;
 
-        public DataStreamWriter Init(int length, int tick = 0)
+        public void Init(int length, int tick = 0)
         {
             if (!Data.IsCreated)
             {
@@ -31,8 +31,6 @@ namespace UnityNetworkLoop
 
             if (tick > 0)
                 UpdateTick = tick; // sugar for Init()
-
-            return Writer; // sugar for Init()
         }
     }
 }
