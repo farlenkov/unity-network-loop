@@ -13,18 +13,6 @@ namespace UnityNetworkLoop
         public DataStreamWriter Writer;
         public int Length => Writer.Length;
 
-        //public static NetworkMessage Create(ushort id = 0)
-        //{
-        //    var message = new NetworkMessage();
-        //    message.Data = new NativeArray<byte>(length, Allocator.Persistent);
-        //    message.Writer = new DataStreamWriter(message.Data);
-
-        //    if (id > 0)
-        //        message.Writer.WriteID(id);
-
-        //    return message;
-        //}
-
         public static NetworkMessage Create(ushort event_id, int length = 2)
         {
             var message = new NetworkMessage();
