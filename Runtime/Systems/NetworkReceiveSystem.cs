@@ -30,7 +30,6 @@ namespace UnityNetworkLoop
 
             while (reader.GetBytesRead() < reader.Length)
             {
-                var offset = reader.GetBytesRead();
                 var id = reader.ReadID();
                 var reader_func = readers.GetReader(id);
 
@@ -40,9 +39,7 @@ namespace UnityNetworkLoop
                     break;
                 }
 
-                //Debug.LogFormat("[NetworkReceiveSystem] NetworkMessageReader: {0}", reader_func.Method.Name);
                 reader_func(ref connection, ref reader, id);
-                //Debug.LogFormat("[NetworkReceiveSystem] OnReceiveMessage: {0} > {1} '{2}'", offset, reader.GetBytesRead(), reader_func.Method.Name);
             }
         }
     }
