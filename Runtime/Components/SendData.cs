@@ -13,7 +13,7 @@ namespace UnityNetworkLoop
         public int UpdateTick;
         public NativeArray<byte> Data;
         public DataStreamWriter Writer;
-        public int Length => Writer.Length;
+        public int Length => Writer.IsCreated ? Writer.Length : 0;
         public Dictionary<int, int> SyncTickByConnection;
 
         public void Init(int length, int tick = 0)
