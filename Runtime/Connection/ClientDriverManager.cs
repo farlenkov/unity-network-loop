@@ -17,8 +17,6 @@ namespace UnityNetworkLoop
             Connections.Add(connection);
 
             return connection;
-        }
-
-        
+        }        
     }
 }
