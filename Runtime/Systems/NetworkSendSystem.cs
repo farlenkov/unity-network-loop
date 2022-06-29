@@ -36,39 +36,41 @@ namespace UnityNetworkLoop
                     continue;
 
                 SortSendData(connection);
-                Send(driver, connection);
+
+                var writer = default(DataStreamWriter);
+
+                Send(driver, connection, Loop.Net.ReliablePipeline, Loop.ReliableMessages, ref writer);
+                Send(driver, connection, Loop.Net.UnreliablePipeline, Loop.UnreliableMessages, ref writer);
+                Send(driver, connection, Loop.Net.UnreliablePipeline, ref writer);
             }
 
-            ClearSendMessages();
+            ClearMessages(Loop.UnreliableMessages);
+            ClearMessages(Loop.ReliableMessages);
         }
 
-        void ClearSendMessages()
+        void ClearMessages(NetworkMessageList messages)
         {
-            for (var i = 0; i < Loop.SendMessages.Count; i++)
-            {
-                var msg = Loop.SendMessages[i];
-                msg.Data.Dispose();
-            }
+            for (var i = 0; i < messages.Count; i++)
+                messages[i].Data.Dispose();
 
-            Loop.SendMessages.Clear();
+            messages.Clear();
         }
 
         void Send(
-            NetworkDriver driver,
-            NetworkConnection connection)
+            NetworkDriver driver, 
+            NetworkConnection connection,
+            NetworkPipeline pipeline,
+            NetworkMessageList messages,
+            ref DataStreamWriter writer)
         {
-            var writer = default(DataStreamWriter);
-
-            // SEND NetworkMessage
-
-            for (var i = 0; i < Loop.SendMessages.Count; i++)
+            for (var i = 0; i < messages.Count; i++)
             {
-                var message = Loop.SendMessages[i];
+                var message = messages[i];
 
                 if (!writer.IsCreated)
                 {
                     Profiler.BeginSample("NetworkDriver.BeginSend");
-                    driver.BeginSend(connection, out writer);
+                    driver.BeginSend(pipeline, connection, out writer);
                     Profiler.EndSample();
                 }
 
@@ -80,9 +82,14 @@ namespace UnityNetworkLoop
                 writer.WriteBytes(sub_array);
                 Profiler.EndSample();
             }
+        }
 
-            // SEND SendData
-
+        void Send(
+            NetworkDriver driver,
+            NetworkConnection connection,
+            NetworkPipeline pipeline,
+            ref DataStreamWriter writer)
+        {
             for (var i = 0; i < SendItems.Count; i++)
             {
                 var send = SendItems[i];
@@ -90,7 +97,7 @@ namespace UnityNetworkLoop
                 if (!writer.IsCreated)
                 {
                     Profiler.BeginSample("NetworkDriver.BeginSend");
-                    driver.BeginSend(connection, out writer);
+                    driver.BeginSend(pipeline, connection, out writer);
                     Profiler.EndSample();
                 }
 

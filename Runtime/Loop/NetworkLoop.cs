@@ -19,7 +19,8 @@ namespace UnityNetworkLoop
         public int Tick { get; internal set; }
 
         public NativeParallelHashMap<ushort, Entity> EntityIndex;
-        public NetworkMessageList SendMessages { get; private set; }
+        public NetworkMessageList UnreliableMessages { get; private set; }
+        public NetworkMessageList ReliableMessages { get; private set; }
 
         public List<NetworkConnection> NewConnections { get; private set; }
         public List<NetworkConnection> OldConnections { get; private set; }
@@ -29,7 +30,9 @@ namespace UnityNetworkLoop
             Readers = new NetworkMessageReaderList();
             SyncUpdate = new GameLoopFuncList();
 
-            SendMessages = new NetworkMessageList();
+            UnreliableMessages = new NetworkMessageList();
+            ReliableMessages = new NetworkMessageList();
+
             EntityIndex = new NativeParallelHashMap<ushort, Entity>(10000, Allocator.Persistent);
             NewConnections = new List<NetworkConnection>();
             OldConnections = new List<NetworkConnection>();

@@ -5,6 +5,7 @@ using UnityEngine;
 using Unity.Networking.Transport;
 using UnityEngine.Profiling;
 using System;
+using Unity.Networking.Transport.Utilities;
 
 namespace UnityNetworkLoop
 {
@@ -17,6 +18,7 @@ namespace UnityNetworkLoop
         // OBJECT
 
         public NetworkDriver Driver { get; private set; }
+        public NetworkPipeline UnreliablePipeline { get; private set; }
         public NetworkPipeline ReliablePipeline { get; private set; }
         public NativeList<NetworkConnection> Connections { get; private set; }
 
@@ -33,8 +35,22 @@ namespace UnityNetworkLoop
         protected void CreateNetworkDriver()
         {
             // TODO: limit connection count
+            
+            var simulation = new SimulatorUtility.Parameters 
+            {
+                MaxPacketSize = 1400,
+                MaxPacketCount = 30, 
+                PacketDelayMs = 300,
+                PacketJitterMs = 100,
+                PacketDropInterval = 2,
+                PacketDropPercentage = 50
+            };
 
-            Driver = NetworkDriver.Create();
+            var settings = new NetworkSettings(Allocator.Temp);
+            settings.AddRawParameterStruct(ref simulation);
+
+            Driver = NetworkDriver.Create(settings);
+            UnreliablePipeline = Driver.CreatePipeline(typeof(SimulatorPipelineStage)); // Driver.CreatePipeline();
             ReliablePipeline = Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
         }
 
