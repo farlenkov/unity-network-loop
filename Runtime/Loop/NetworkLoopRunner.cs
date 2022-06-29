@@ -15,8 +15,8 @@ namespace UnityNetworkLoop
 
         protected override void Update()
         {
-            CallSyncUpdate();
             base.Update();
+            CallSyncUpdate();
         }
 
         void CallSyncUpdate()
