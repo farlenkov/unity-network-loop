@@ -146,11 +146,14 @@ namespace UnityNetworkLoop
 
                 send.SyncTickByConnection.TryGetValue(connection.InternalId, out var sync_time);
 
+                if (send.UpdateTick <= sync_time)
+                    return;
+
                 SendItems.Add(new SendItem()
                 {
                     LastSyncTime = sync_time,
                     Data = send
-                });
+                });                
 
             }).WithoutBurst().Run();
 
