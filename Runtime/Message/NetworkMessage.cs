@@ -12,6 +12,7 @@ namespace UnityNetworkLoop
         public NativeArray<byte> Data;
         public DataStreamWriter Writer;
         public int Length => Writer.Length;
+        public NetworkConnection Connection;
 
         public static NetworkMessage Create(ushort event_id, int length = 2)
         {

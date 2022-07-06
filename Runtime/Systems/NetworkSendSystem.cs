@@ -67,6 +67,10 @@ namespace UnityNetworkLoop
             {
                 var message = messages[i];
 
+                if (message.Connection.IsCreated &&
+                    message.Connection != connection)
+                    continue;
+
                 if (!writer.IsCreated)
                 {
                     Profiler.BeginSample("NetworkDriver.BeginSend");
