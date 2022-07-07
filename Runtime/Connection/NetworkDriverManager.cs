@@ -6,6 +6,7 @@ using Unity.Networking.Transport;
 using UnityEngine.Profiling;
 using System;
 using Unity.Networking.Transport.Utilities;
+using UnityUtility;
 
 namespace UnityNetworkLoop
 {
@@ -98,22 +99,44 @@ namespace UnityNetworkLoop
                             break;
 
                         case NetworkEvent.Type.Disconnect:
+                            
                             Debug.Log("Disconnected");
                             callback(cmd, connection, default);
+
+                            connections.RemoveAtSwapBack(i);
+                            i--;
+
                             break;
                     }
                 }
             }
         }
 
-       
+        // DISCONNECT
+
+        public void Disconnect()
+        {
+            for (var i = 0; i < Connections.Length; i++)
+            {
+                var conn = Connections[i];
+
+                if (conn.IsCreated)
+                {
+                    Log.InfoEditor("[NetworkDriverManager] Disconnect {0}", conn.InternalId);
+                    conn.Disconnect(Driver);
+                }
+            }
+        }
+
         // DESTROY
 
         void OnDestroy()
         {
+            Disconnect();
+
             if (Driver.IsCreated)
                 Driver.Dispose();
-            
+
             if (Connections.IsCreated)
                 Connections.Dispose();
         }
