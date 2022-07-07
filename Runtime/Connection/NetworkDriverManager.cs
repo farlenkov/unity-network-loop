@@ -136,6 +136,11 @@ namespace UnityNetworkLoop
 
         void OnDestroy()
         {
+            Log.InfoEditor(
+                "[NetworkDriverManager] OnDestroy {0} {1}", 
+                Driver.IsCreated,
+                Connections.IsCreated);
+
             Disconnect();
 
             if (Driver.IsCreated)
