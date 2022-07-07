@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Networking.Transport;
 using UnityEngine;
 using UnityGameLoop;
+using UnityUtility;
 
 namespace UnityNetworkLoop
 {
@@ -23,9 +24,22 @@ namespace UnityNetworkLoop
             NetworkConnection connection,
             DataStreamReader reader)
         {
-            if (event_type != NetworkEvent.Type.Data)
-                return;
+            switch (event_type)
+            {
+                case NetworkEvent.Type.Data:
+                    Read(connection, reader);
+                    break;
 
+                case NetworkEvent.Type.Disconnect:
+                    Disconnect(connection);
+                    break;
+            }
+        }
+
+        void Read(
+            NetworkConnection connection,
+            DataStreamReader reader)
+        {
             var readers = Loop.Readers;
 
             while (reader.GetBytesRead() < reader.Length)
@@ -35,12 +49,21 @@ namespace UnityNetworkLoop
 
                 if (reader_func == null)
                 {
-                    Debug.LogErrorFormat("[NetworkReceiveSystem] Can't find NetworkMessageReader for message ID {0} GetBytesRead: {1}", id, reader.GetBytesRead());
+                    Log.Error("[NetworkReceiveSystem] Can't find NetworkMessageReader for message ID {0} GetBytesRead: {1}", id, reader.GetBytesRead());
                     break;
                 }
 
                 reader_func(ref connection, ref reader, id);
             }
+        }
+
+        void Disconnect(NetworkConnection connection)
+        {
+            Log.InfoEditor(
+                "[NetworkReceiveSystem] Loop.Disconnected.Add() - {0}",
+                connection.InternalId);
+
+            Loop.Disconnected.Add(connection);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace UnityNetworkLoop
     {
         protected override void OnUpdate()
         {
-            Loop.NewConnections.Clear();
-            Loop.OldConnections.Clear();
+            Loop.Connected.Clear();
+            Loop.Disconnected.Clear();
         }
 
         protected override void OnDestroy()
