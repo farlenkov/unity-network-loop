@@ -22,8 +22,8 @@ namespace UnityNetworkLoop
         public NetworkMessageList UnreliableMessages { get; private set; }
         public NetworkMessageList ReliableMessages { get; private set; }
 
-        public List<NetworkConnection> NewConnections { get; private set; }
-        public List<NetworkConnection> OldConnections { get; private set; }
+        public List<NetworkConnection> Connected { get; private set; }
+        public List<NetworkConnection> Disconnected { get; private set; }
 
         public NetworkLoop(GameLoopRunner loopRunner) : base(loopRunner)
         {
@@ -34,8 +34,8 @@ namespace UnityNetworkLoop
             ReliableMessages = new NetworkMessageList();
 
             EntityIndex = new NativeParallelHashMap<ushort, Entity>(10000, Allocator.Persistent);
-            NewConnections = new List<NetworkConnection>();
-            OldConnections = new List<NetworkConnection>();
+            Connected = new List<NetworkConnection>();
+            Disconnected = new List<NetworkConnection>();
         }
     }
 }
