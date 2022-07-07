@@ -8,5 +8,6 @@ namespace UnityNetworkLoop
     {
         public const ushort None = 0;
         public const ushort KeepAlive = 1;
+        public const ushort Disconnect = 2;
     }
 }

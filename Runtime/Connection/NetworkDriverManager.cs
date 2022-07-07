@@ -122,6 +122,10 @@ namespace UnityNetworkLoop
 
                 if (conn.IsCreated)
                 {
+                    Driver.BeginSend(ReliablePipeline, conn, out var writer);
+                    writer.WriteID(NetworkMessageType.Disconnect);
+                    Driver.EndSend(writer);
+
                     Log.InfoEditor("[NetworkDriverManager] Disconnect {0}", conn.InternalId);
                     conn.Disconnect(Driver);
                 }
