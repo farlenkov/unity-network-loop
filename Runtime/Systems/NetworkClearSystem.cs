@@ -15,8 +15,8 @@ namespace UnityNetworkLoop
             DisposeSendData_OnDestroyEvent();
             DestroyEntity_OnDestroyEvent();
 
-            Loop.Connected.Clear();
-            Loop.Disconnected.Clear();
+            Loop.ConnectEvents.Clear();
+            Loop.DisconnectEvents.Clear();
         }
 
         // DESTROY EVENT

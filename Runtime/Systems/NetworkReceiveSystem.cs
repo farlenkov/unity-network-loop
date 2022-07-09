@@ -63,7 +63,7 @@ namespace UnityNetworkLoop
                 "[NetworkReceiveSystem] Loop.Disconnected.Add() - {0}",
                 connection.InternalId);
 
-            Loop.Disconnected.Add(connection);
+            Loop.DisconnectEvents.Add(connection);
         }
     }
 }

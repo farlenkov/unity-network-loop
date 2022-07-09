@@ -23,9 +23,21 @@ namespace UnityNetworkLoop
 
                 if (!connection.IsCreated)
                 {
+                    // REMOVE from CONNECTIONS
+
                     connections.RemoveAtSwapBack(i);
-                    Loop.Disconnected.Add(connection);
                     i--;
+
+                    // REMOVE from READY CONNECTIONS
+
+                    var ready_index = Loop.ReadyConnections.IndexOf(connection);
+
+                    if (ready_index >= 0)
+                        Loop.ReadyConnections.RemoveAt(ready_index);
+
+                    // CREATE DISCONNECT EVENT
+
+                    Loop.DisconnectEvents.Add(connection);
 
                     Log.InfoEditor(
                         "[CleanUpConnectionsSystem] Loop.Disconnected.Add() - {0}", 

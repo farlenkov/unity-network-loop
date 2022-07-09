@@ -10,6 +10,8 @@ namespace UnityNetworkLoop
 {
     public abstract class NetworkLoop : GameLoop
     {
+        // FUNC
+
         public NetworkDriverManager Net => NetworkDriverManager.Current;
         public NetworkMessageReaderList Readers { get; private set; }
         public GameLoopFuncList SyncUpdate { get; private set; }
@@ -17,13 +19,18 @@ namespace UnityNetworkLoop
         // DATA
 
         public int Tick { get; internal set; }
-
         public NativeParallelHashMap<ushort, Entity> EntityIndex;
+
+        // MESSAGES
+
         public NetworkMessageList UnreliableMessages { get; private set; }
         public NetworkMessageList ReliableMessages { get; private set; }
 
-        public List<NetworkConnection> Connected { get; private set; }
-        public List<NetworkConnection> Disconnected { get; private set; }
+        // CONNECTIONS
+
+        public List<NetworkConnection> ConnectEvents { get; private set; }
+        public List<NetworkConnection> DisconnectEvents { get; private set; }
+        public List<NetworkConnection> ReadyConnections { get; private set; }
 
         public NetworkLoop(GameLoopRunner loopRunner) : base(loopRunner)
         {
@@ -34,8 +41,10 @@ namespace UnityNetworkLoop
             ReliableMessages = new NetworkMessageList();
 
             EntityIndex = new NativeParallelHashMap<ushort, Entity>(10000, Allocator.Persistent);
-            Connected = new List<NetworkConnection>();
-            Disconnected = new List<NetworkConnection>();
+
+            ConnectEvents = new List<NetworkConnection>();
+            DisconnectEvents = new List<NetworkConnection>();
+            ReadyConnections = new List<NetworkConnection>(200);
         }
     }
 }

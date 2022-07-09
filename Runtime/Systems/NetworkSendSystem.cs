@@ -20,12 +20,18 @@ namespace UnityNetworkLoop
     {
         List<SendItem> SendItems = new List<SendItem>();
 
+        /// <summary>
+        /// Send 'NetworkMessage' and 'SendData' to 'ReadyConnections'
+        /// </summary>
+
+        public NetworkSendSystem() { }
+
         protected override void OnUpdate()
         {
             var driver = Loop.Net.Driver;
-            var connections = Loop.Net.Connections;
+            var connections = Loop.ReadyConnections;
 
-            for (int i = 0; i < connections.Length; i++)
+            for (int i = 0; i < connections.Count; i++)
             {
                 var connection = connections[i];
 
