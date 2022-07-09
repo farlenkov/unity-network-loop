@@ -36,8 +36,8 @@ namespace UnityNetworkLoop
         protected void CreateNetworkDriver()
         {
             // TODO: limit connection count
-            
-            var simulation = new SimulatorUtility.Parameters 
+
+            var simulation = new SimulatorUtility.Parameters
             {
                 //MaxPacketSize = 1400,
                 //MaxPacketCount = 30, 
@@ -76,7 +76,6 @@ namespace UnityNetworkLoop
             for (int i = 0; i < connections.Length; i++)
             {
                 var connection = connections[i];
-
                 DataStreamReader reader;
                 NetworkEvent.Type cmd;
 
@@ -90,22 +89,17 @@ namespace UnityNetworkLoop
                             break;
 
                         case NetworkEvent.Type.Data:
-
                             if (reader.IsCreated)
                                 callback(cmd, connection, reader);
                             else
                                 Debug.LogError("reader.IsCreated == false"); // ?
-
                             break;
 
                         case NetworkEvent.Type.Disconnect:
-                            
                             Debug.Log("Disconnected");
                             callback(cmd, connection, default);
-
                             connections.RemoveAtSwapBack(i);
                             i--;
-
                             break;
                     }
                 }
@@ -137,7 +131,7 @@ namespace UnityNetworkLoop
         void OnDestroy()
         {
             Log.InfoEditor(
-                "[NetworkDriverManager] OnDestroy {0} {1}", 
+                "[NetworkDriverManager] OnDestroy {0} {1}",
                 Driver.IsCreated,
                 Connections.IsCreated);
 
