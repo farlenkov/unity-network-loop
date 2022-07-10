@@ -6,7 +6,7 @@ using UnityUtility;
 
 namespace UnityNetworkLoop
 {
-    public class CleanUpConnectionsSystem : GameLoopManager<NetworkLoop>
+    public class CleanupConnectionsSystem : GameLoopManager<NetworkLoop>
     {
         protected override void Init()
         {
