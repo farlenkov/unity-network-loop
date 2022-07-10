@@ -110,18 +110,21 @@ namespace UnityNetworkLoop
 
         public void Disconnect()
         {
+            if (!Connections.IsCreated)
+                return;
+
             for (var i = 0; i < Connections.Length; i++)
             {
-                var conn = Connections[i];
+                var connection = Connections[i];
 
-                if (conn.IsCreated)
+                if (connection.IsCreated)
                 {
-                    Driver.BeginSend(ReliablePipeline, conn, out var writer);
+                    Driver.BeginSend(ReliablePipeline, connection, out var writer);
                     writer.WriteID(NetworkMessageType.Disconnect);
                     Driver.EndSend(writer);
 
-                    Log.InfoEditor("[NetworkDriverManager] Disconnect {0}", conn.InternalId);
-                    conn.Disconnect(Driver);
+                    Log.InfoEditor("[NetworkDriverManager: Disconnect] connection: {0}", connection.InternalId);
+                    connection.Disconnect(Driver);
                 }
             }
         }
@@ -131,7 +134,7 @@ namespace UnityNetworkLoop
         void OnDestroy()
         {
             Log.InfoEditor(
-                "[NetworkDriverManager] OnDestroy {0} {1}",
+                "[NetworkDriverManager: OnDestroy] Driver: {0} Connections: {1}",
                 Driver.IsCreated,
                 Connections.IsCreated);
 
