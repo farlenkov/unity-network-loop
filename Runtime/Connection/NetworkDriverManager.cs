@@ -27,6 +27,12 @@ namespace UnityNetworkLoop
 
         void Awake()
         {
+            if (Current != null)
+            {
+                Destroy(this);
+                return;
+            }
+
             Current = this;
 
             DontDestroyOnLoad(gameObject);
@@ -137,8 +143,6 @@ namespace UnityNetworkLoop
                 "[NetworkDriverManager: OnDestroy] Driver: {0} Connections: {1}",
                 Driver.IsCreated,
                 Connections.IsCreated);
-
-            Disconnect();
 
             if (Driver.IsCreated)
                 Driver.Dispose();
