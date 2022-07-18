@@ -8,8 +8,10 @@ namespace UnityNetworkLoop
 {
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
-    public partial class NetworkClearSystem : NetworkSystem<NetworkLoop>
+    public partial class NetworkClearSystem : GameLoopSystem<NetworkLoop>
     {
+        protected override GameLoopFuncList UpdateList => Loop.SyncUpdate;
+
         protected override void OnUpdate()
         {
             DisposeSendData_OnDestroyEvent();

@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
+using UnityGameLoop;
 
 namespace UnityNetworkLoop
 {
-    public class KeepAliveSendSystem : NetworkSystem<NetworkLoop>
+    public class KeepAliveSendSystem : GameLoopManager<NetworkLoop>
     {
         protected override void Init()
-        {
+        {            
             Loop.Start.Add(Start);
         }
 

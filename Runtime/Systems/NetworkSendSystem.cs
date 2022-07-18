@@ -6,6 +6,7 @@ using Unity.Entities;
 using Unity.Networking.Transport;
 using UnityEngine;
 using UnityEngine.Profiling;
+using UnityGameLoop;
 
 namespace UnityNetworkLoop
 {
@@ -16,9 +17,11 @@ namespace UnityNetworkLoop
     }
 
     [DisableAutoCreation]
-    public partial class NetworkSendSystem : NetworkSystem<NetworkLoop>
+    public partial class NetworkSendSystem : GameLoopSystem<NetworkLoop>
     {
         List<SendItem> SendItems = new List<SendItem>();
+
+        protected override GameLoopFuncList UpdateList => Loop.SyncUpdate;
 
         /// <summary>
         /// Send 'NetworkMessage' and 'SendData' to 'ReadyConnections'
