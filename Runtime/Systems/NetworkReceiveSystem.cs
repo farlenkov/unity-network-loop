@@ -9,6 +9,14 @@ namespace UnityNetworkLoop
 {
     public class NetworkReceiveSystem : GameLoopManager<NetworkLoop>
     {
+        /// <summary>
+        /// Process Data and Disconnect events.
+        /// Data events goes to NetworkMessageReader.
+        /// Disconnect events goes to Loop.DisconnectEvents.
+        /// </summary>
+
+        public NetworkReceiveSystem() { }
+
         protected override void Init()
         {
             Loop.SyncUpdate.Add(Update);

@@ -9,6 +9,12 @@ namespace UnityNetworkLoop
 {
     public class AcceptConnectionsSystem : GameLoopManager<NetworkLoop>
     {
+        /// <summary>
+        /// Call Driver.Accept()
+        /// </summary>
+
+        public AcceptConnectionsSystem() { }
+
         protected override void Init()
         {
             Loop.SyncUpdate.Add(Update);

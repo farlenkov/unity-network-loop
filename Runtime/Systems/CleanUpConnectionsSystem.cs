@@ -8,6 +8,12 @@ namespace UnityNetworkLoop
 {
     public class CleanupConnectionsSystem : GameLoopManager<NetworkLoop>
     {
+        /// <summary>
+        /// Check connection.IsCreated for exsisting connections
+        /// </summary>
+
+        public CleanupConnectionsSystem() { }
+
         protected override void Init()
         {
             Loop.SyncUpdate.Add(Update);

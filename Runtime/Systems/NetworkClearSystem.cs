@@ -10,6 +10,12 @@ namespace UnityNetworkLoop
     [AlwaysUpdateSystem]
     public partial class NetworkClearSystem : GameLoopSystem<NetworkLoop>
     {
+        /// <summary>
+        /// Cleanup network relative data.
+        /// </summary>
+
+        public NetworkClearSystem() { }
+
         protected override GameLoopFuncList UpdateList => Loop.SyncUpdate;
 
         protected override void OnUpdate()

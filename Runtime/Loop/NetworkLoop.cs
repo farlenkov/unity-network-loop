@@ -30,6 +30,11 @@ namespace UnityNetworkLoop
 
         public List<NetworkConnection> ConnectEvents { get; private set; }
         public List<NetworkConnection> DisconnectEvents { get; private set; }
+
+        /// <summary>
+        /// Connections that are ready to be used in NetworkSendSystem
+        /// </summary>
+
         public List<NetworkConnection> ReadyConnections { get; private set; }
 
         public NetworkLoop(GameLoopRunner loopRunner) : base(loopRunner)

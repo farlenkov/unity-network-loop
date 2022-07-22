@@ -8,6 +8,13 @@ namespace UnityNetworkLoop
 {
     public class KeepAliveSendSystem : GameLoopManager<NetworkLoop>
     {
+        /// <summary>
+        /// Create entity with 'SendData' component and 'KeepAlive' message type.
+        /// TODO: need to rework to send KeepAlive less often.
+        /// </summary>
+
+        public KeepAliveSendSystem() { }
+
         protected override void Init()
         {            
             Loop.Start.Add(Start);

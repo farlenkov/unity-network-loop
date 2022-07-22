@@ -19,15 +19,14 @@ namespace UnityNetworkLoop
     [DisableAutoCreation]
     public partial class NetworkSendSystem : GameLoopSystem<NetworkLoop>
     {
-        List<SendItem> SendItems = new List<SendItem>();
-
-        protected override GameLoopFuncList UpdateList => Loop.SyncUpdate;
-
         /// <summary>
         /// Send 'NetworkMessage' and 'SendData' to 'ReadyConnections'
         /// </summary>
 
         public NetworkSendSystem() { }
+
+        List<SendItem> SendItems = new List<SendItem>();
+        protected override GameLoopFuncList UpdateList => Loop.SyncUpdate;
 
         protected override void OnUpdate()
         {
