@@ -10,5 +10,6 @@ namespace UnityNetworkLoop
     public struct SpawnEvent : IComponentData
     {
         public float3 Position;
+        public float3 Rotation;
     }
 }
