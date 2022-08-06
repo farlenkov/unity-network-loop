@@ -17,6 +17,7 @@ namespace UnityNetworkLoop
     }
 
     [DisableAutoCreation]
+    [AlwaysUpdateSystem]
     public partial class NetworkSendSystem : GameLoopSystem<NetworkLoop>
     {
         /// <summary>

@@ -45,16 +45,16 @@ namespace UnityNetworkLoop
 
             var simulation = new SimulatorUtility.Parameters
             {
-                //MaxPacketSize = 1400,
-                //MaxPacketCount = 30, 
-                //PacketDelayMs = 300,
-                //PacketJitterMs = 100,
-                //PacketDropInterval = 2,
-                //PacketDropPercentage = 50
+                MaxPacketSize = 1400,
+                MaxPacketCount = 30,
+                PacketDelayMs = 300,
+                PacketJitterMs = 100,
+                PacketDropInterval = 2,
+                PacketDropPercentage = 50
             };
 
             var settings = new NetworkSettings(Allocator.Temp);
-            settings.AddRawParameterStruct(ref simulation);
+            //settings.AddRawParameterStruct(ref simulation);
 
             Driver = NetworkDriver.Create(settings);
             UnreliablePipeline = Driver.CreatePipeline(typeof(SimulatorPipelineStage)); // Driver.CreatePipeline();
