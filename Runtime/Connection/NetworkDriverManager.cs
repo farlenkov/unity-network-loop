@@ -90,7 +90,7 @@ namespace UnityNetworkLoop
                     switch (cmd)
                     {
                         case NetworkEvent.Type.Connect:
-                            Debug.Log("Connected");
+                            Debug.LogFormat("[NetworkDriverManager: ReadEvents] Connected {0}", connection.InternalId);
                             callback(cmd, connection, default);
                             break;
 
@@ -98,11 +98,11 @@ namespace UnityNetworkLoop
                             if (reader.IsCreated)
                                 callback(cmd, connection, reader);
                             else
-                                Debug.LogError("reader.IsCreated == false"); // ?
+                                Debug.LogErrorFormat("[NetworkDriverManager: ReadEvents] Data {0} / reader.IsCreated == false", connection.InternalId); // ?
                             break;
 
                         case NetworkEvent.Type.Disconnect:
-                            Debug.Log("Disconnected");
+                            Debug.LogFormat("[NetworkDriverManager: ReadEvents] Disconnected {0}", connection.InternalId);
                             callback(cmd, connection, default);
                             connections.RemoveAtSwapBack(i);
                             i--;
