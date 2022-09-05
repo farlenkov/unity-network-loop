@@ -9,9 +9,8 @@ namespace UnityNetworkLoop
     public abstract class NetworkLoopRunner<LOOP> : GameLoopRunner<LOOP>
         where LOOP : NetworkLoop
     {
-        float Interval = 1f/20;
-        float NextTick;
-        float PrevTick;
+        float Interval = 1f/20; 
+        float TimeAccumulator;
 
         protected override void Update()
         {
@@ -21,16 +20,13 @@ namespace UnityNetworkLoop
 
         void CallSyncUpdate()
         {
-            var time = Time.time;
+            TimeAccumulator += Time.unscaledDeltaTime;
 
-            if (NextTick <= time)
+            while (TimeAccumulator >= Interval)
             {
+                TimeAccumulator -= Interval;
                 Loop.Tick++;
-
-                Call(time - PrevTick, Loop.SyncUpdate);
-
-                PrevTick = time;
-                NextTick = time + Interval;
+                Call(Interval, Loop.SyncUpdate);
             }
         }
     }
