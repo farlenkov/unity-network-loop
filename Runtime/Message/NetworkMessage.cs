@@ -14,11 +14,14 @@ namespace UnityNetworkLoop
         public int Length => Writer.Length;
         public NetworkConnection Connection;
 
+        //public ushort EventID { get; private set; }
+
         public static NetworkMessage Create(ushort event_id, int length = 2)
         {
             var message = new NetworkMessage();
             message.Data = new NativeArray<byte>(length, Allocator.Persistent);
             message.Writer = new DataStreamWriter(message.Data);
+            //message.EventID = event_id;
 
             if (event_id > 0)
                 message.Writer.WriteID(event_id);

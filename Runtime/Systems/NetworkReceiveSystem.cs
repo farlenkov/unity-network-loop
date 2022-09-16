@@ -61,6 +61,7 @@ namespace UnityNetworkLoop
                     break;
                 }
 
+                //Log.InfoEditor("### [NetworkReceiveSystem] Received message ID {0}", id);
                 reader_func(ref connection, ref reader, id);
             }
         }

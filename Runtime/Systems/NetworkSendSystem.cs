@@ -7,6 +7,7 @@ using Unity.Networking.Transport;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityGameLoop;
+using UnityUtility;
 
 namespace UnityNetworkLoop
 {
@@ -33,6 +34,14 @@ namespace UnityNetworkLoop
         {
             var driver = Loop.Net.Driver;
             var connections = Loop.ReadyConnections;
+            //var sendCount = 0;
+
+            //Log.InfoEditor(
+            //    "### [NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
+            //    sendCount,
+            //    Loop.ReadyConnections.Count,
+            //    Loop.ReliableMessages.Count,
+            //    Loop.UnreliableMessages.Count);
 
             for (int i = 0; i < connections.Count; i++)
             {
@@ -51,7 +60,21 @@ namespace UnityNetworkLoop
                 Send(driver, connection, Loop.Net.ReliablePipeline, Loop.ReliableMessages, ref writer);
                 Send(driver, connection, Loop.Net.UnreliablePipeline, Loop.UnreliableMessages, ref writer);
                 Send(driver, connection, Loop.Net.UnreliablePipeline, ref writer);
+
+                //sendCount++;
             }
+
+            //if (sendCount == 0 &&
+            //    (Loop.UnreliableMessages.Count > 0 ||
+            //    Loop.ReliableMessages.Count > 0))
+            //{
+                //Log.Error(
+                //    "### [NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
+                //    sendCount,
+                //    Loop.ReadyConnections.Count,
+                //    Loop.ReliableMessages.Count,
+                //    Loop.UnreliableMessages.Count);
+            //}
 
             ClearMessages(Loop.UnreliableMessages);
             ClearMessages(Loop.ReliableMessages);
@@ -75,6 +98,7 @@ namespace UnityNetworkLoop
             for (var i = 0; i < messages.Count; i++)
             {
                 var message = messages[i];
+                //Log.InfoEditor("### [NetworkSendSystem] EventID {0}", message.EventID);
 
                 if (message.Connection.IsCreated &&
                     message.Connection != connection)
