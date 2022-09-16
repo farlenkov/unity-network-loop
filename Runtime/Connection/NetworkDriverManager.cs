@@ -76,16 +76,13 @@ namespace UnityNetworkLoop
 
         public void ReadEvents(Action<NetworkEvent.Type, NetworkConnection, DataStreamReader> callback)
         {
-            var driver = Driver;
-            var connections = Connections;
-
-            for (int i = 0; i < connections.Length; i++)
+            for (int i = 0; i < Connections.Length; i++)
             {
-                var connection = connections[i];
+                var connection = Connections[i];
                 DataStreamReader reader;
                 NetworkEvent.Type cmd;
 
-                while ((cmd = driver.PopEventForConnection(connection, out reader)) != NetworkEvent.Type.Empty)
+                while ((cmd = Driver.PopEventForConnection(connection, out reader)) != NetworkEvent.Type.Empty)
                 {
                     switch (cmd)
                     {
@@ -104,7 +101,7 @@ namespace UnityNetworkLoop
                         case NetworkEvent.Type.Disconnect:
                             Debug.LogFormat("[NetworkDriverManager: ReadEvents] Disconnected {0}", connection.InternalId);
                             callback(cmd, connection, default);
-                            connections.RemoveAtSwapBack(i);
+                            Connections.RemoveAtSwapBack(i);
                             i--;
                             break;
                     }

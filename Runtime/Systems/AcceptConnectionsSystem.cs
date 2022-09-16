@@ -22,13 +22,11 @@ namespace UnityNetworkLoop
 
         void Update(float obj)
         {
-            var connections = Loop.Net.Connections;
-            var driver = Loop.Net.Driver;
             NetworkConnection connection;
 
-            while ((connection = driver.Accept()) != default(NetworkConnection))
+            while ((connection = Loop.Net.Driver.Accept()) != default(NetworkConnection))
             {
-                connections.Add(connection);
+                Loop.Net.Connections.Add(connection);
                 Loop.ConnectEvents.Add(connection);
 
                 Log.InfoEditor(

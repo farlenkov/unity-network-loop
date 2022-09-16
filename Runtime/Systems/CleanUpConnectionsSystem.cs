@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Networking.Transport;
 using UnityEngine;
 using UnityGameLoop;
 using UnityUtility;
@@ -21,34 +22,32 @@ namespace UnityNetworkLoop
 
         void Update(float obj)
         {
-            var connections = Loop.Net.Connections;
-
             for (int i = 0; i < Loop.Net.Connections.Length; i++)
             {
-                var connection = connections[i];
+                var connection = Loop.Net.Connections[i];
 
-                if (!connection.IsCreated)
-                {
-                    // REMOVE from CONNECTIONS
+                if (connection.GetState(Loop.Net.Driver) == NetworkConnection.State.Connected)
+                    continue;
 
-                    connections.RemoveAtSwapBack(i);
-                    i--;
+                // REMOVE from CONNECTIONS
 
-                    // REMOVE from READY CONNECTIONS
+                Loop.Net.Connections.RemoveAtSwapBack(i);
+                i--;
 
-                    var ready_index = Loop.ReadyConnections.IndexOf(connection);
+                // REMOVE from READY CONNECTIONS
 
-                    if (ready_index >= 0)
-                        Loop.ReadyConnections.RemoveAt(ready_index);
+                var ready_index = Loop.ReadyConnections.IndexOf(connection);
 
-                    // CREATE DISCONNECT EVENT
+                if (ready_index >= 0)
+                    Loop.ReadyConnections.RemoveAt(ready_index);
 
-                    Loop.DisconnectEvents.Add(connection);
+                // CREATE DISCONNECT EVENT
 
-                    Log.InfoEditor(
-                        "[CleanUpConnectionsSystem] Loop.Disconnected.Add() - {0}", 
-                        connection.InternalId);
-                }
+                Loop.DisconnectEvents.Add(connection);
+
+                Log.InfoEditor(
+                    "[CleanUpConnectionsSystem] Loop.Disconnected.Add() - {0}",
+                    connection.InternalId);
             }
         }
     }
