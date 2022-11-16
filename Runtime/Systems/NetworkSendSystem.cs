@@ -37,7 +37,7 @@ namespace UnityNetworkLoop
             //var sendCount = 0;
 
             //Log.InfoEditor(
-            //    "### [NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
+            //    "[NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
             //    sendCount,
             //    Loop.ReadyConnections.Count,
             //    Loop.ReliableMessages.Count,
@@ -69,7 +69,7 @@ namespace UnityNetworkLoop
             //    Loop.ReliableMessages.Count > 0))
             //{
                 //Log.Error(
-                //    "### [NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
+                //    "[NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
                 //    sendCount,
                 //    Loop.ReadyConnections.Count,
                 //    Loop.ReliableMessages.Count,
@@ -98,7 +98,7 @@ namespace UnityNetworkLoop
             for (var i = 0; i < messages.Count; i++)
             {
                 var message = messages[i];
-                //Log.InfoEditor("### [NetworkSendSystem] EventID {0}", message.EventID);
+                //Log.InfoEditor("[NetworkSendSystem] EventID {0}", message.EventID);
 
                 if (message.Connection.IsCreated &&
                     message.Connection != connection)

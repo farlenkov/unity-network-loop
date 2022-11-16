@@ -18,7 +18,7 @@ namespace UnityNetworkLoop
 
         public void Add(NetworkMessage message)
         {
-            //Log.InfoEditor("### [NetworkMessageList] Add: {0}", message.EventID);
+            //Log.InfoEditor("[NetworkMessageList] Add: {0}", message.EventID);
 
             if (message.Writer.HasFailedWrites)
             {
