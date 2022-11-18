@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityUtility;
@@ -14,6 +15,11 @@ namespace UnityNetworkLoop
         public NetworkMessageList()
         {
             list = new List<NetworkMessage>(100);
+        }
+
+        public void Add(ushort event_id)
+        {
+            Add (NetworkMessage.Create(event_id));
         }
 
         public void Add(NetworkMessage message)
