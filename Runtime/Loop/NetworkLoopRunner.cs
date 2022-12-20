@@ -25,9 +25,14 @@ namespace UnityNetworkLoop
             while (TimeAccumulator >= Interval)
             {
                 TimeAccumulator -= Interval;
-                Loop.Tick++;
-                Call(Interval, Loop.SyncUpdate);
+                CallSyncUpdate(Interval);
             }
+        }
+
+        protected void CallSyncUpdate(float delta)
+        {
+            Loop.Tick++;
+            Call(delta, Loop.SyncUpdate);
         }
     }
 }
