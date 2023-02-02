@@ -98,18 +98,27 @@ namespace UnityNetworkLoop
             for (var i = 0; i < messages.Count; i++)
             {
                 var message = messages[i];
-                //Log.InfoEditor("[NetworkSendSystem] EventID {0}", message.EventID);
 
                 if (message.Connection.IsCreated &&
                     message.Connection != connection)
                     continue;
 
-                if (!writer.IsCreated)
-                {
-                    Profiler.BeginSample("NetworkDriver.BeginSend");
-                    driver.BeginSend(pipeline, connection, out writer);
-                    Profiler.EndSample();
-                }
+                //if (!writer.IsCreated)
+                //{
+                //    Profiler.BeginSample("NetworkDriver.BeginSend");
+                //    driver.BeginSend(pipeline, connection, out writer);
+                //    Profiler.EndSample();
+                //}
+
+                CheckAndInitWriter(
+                    message.Length,
+                    driver,
+                    connection,
+                    pipeline,
+                    ref writer);
+
+                //if (writer.IsCreated && message.EventID == 14)
+                //    Log.InfoEditor("[NetworkSendSystem] EventID {0} 'PlayerSpawn' {1}", message.EventID, writer.Length);
 
                 Profiler.BeginSample("NativeArray<byte>.GetSubArray");
                 var sub_array = message.Data.GetSubArray(0, message.Length);
@@ -131,24 +140,12 @@ namespace UnityNetworkLoop
             {
                 var send = SendItems[i];
 
-                if (!writer.IsCreated)
-                {
-                    Profiler.BeginSample("NetworkDriver.BeginSend");
-                    driver.BeginSend(pipeline, connection, out writer);
-                    Profiler.EndSample();
-                }
-
-                if (send.Data.Length > writer.Capacity - writer.Length)
-                {
-                    break;
-                    //Profiler.BeginSample("NetworkDriver.EndSend");
-                    //driver.EndSend(writer);
-                    //Profiler.EndSample();
-
-                    //Profiler.BeginSample("NetworkDriver.BeginSend");
-                    //driver.BeginSend(connection, out writer);
-                    //Profiler.EndSample();
-                }
+                CheckAndInitWriter(
+                    send.Data.Length,
+                    driver,
+                    connection,
+                    pipeline,
+                    ref writer);
 
                 Profiler.BeginSample("NativeArray<byte>.GetSubArray");
                 var sub_array = send.Data.Data.GetSubArray(0, send.Data.Length);
@@ -169,6 +166,41 @@ namespace UnityNetworkLoop
                 Profiler.BeginSample("NetworkDriver.EndSend");
                 driver.EndSend(writer);
                 Profiler.EndSample(); 
+            }
+        }
+
+        void CheckAndInitWriter(
+            int message_lenght,
+            NetworkDriver driver,
+            NetworkConnection connection,
+            NetworkPipeline pipeline,
+            ref DataStreamWriter writer)
+        {
+            if (!writer.IsCreated)
+            {
+                Profiler.BeginSample("NetworkDriver.BeginSend");
+                driver.BeginSend(pipeline, connection, out writer);
+                Profiler.EndSample();
+                return;
+            }
+
+            if (message_lenght > writer.Capacity - writer.Length)
+            {
+                Log.InfoEditor(
+                    "[NetworkSendSystem] Recreate Writer {0} + {1} > {2}",
+                    writer.Length,
+                    message_lenght,
+                    writer.Capacity);
+
+                //break;
+
+                Profiler.BeginSample("NetworkDriver.EndSend");
+                driver.EndSend(writer);
+                Profiler.EndSample();
+
+                Profiler.BeginSample("NetworkDriver.BeginSend");
+                driver.BeginSend(pipeline, connection, out writer);
+                Profiler.EndSample();
             }
         }
 
