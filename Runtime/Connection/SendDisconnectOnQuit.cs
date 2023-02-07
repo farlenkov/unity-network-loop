@@ -19,10 +19,14 @@ namespace UnityNetworkLoop
         bool WantsToQuit()
         {
             Log.InfoEditor(
-                "[SendDisconnectOnQuit: WantsToQuit] DisconnectCoroutine: {0}",
-                DisconnectCoroutine != null);
+                "[SendDisconnectOnQuit: WantsToQuit] DisconnectCoroutine: {0} This: {1}",
+                DisconnectCoroutine != null,
+                this);
 
             if (IsReadyToQuit)
+                return true;
+
+            if (gameObject == null || this == null)
                 return true;
 
             if (DisconnectCoroutine == null)

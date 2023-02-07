@@ -186,11 +186,11 @@ namespace UnityNetworkLoop
 
             if (message_lenght > writer.Capacity - writer.Length)
             {
-                Log.InfoEditor(
-                    "[NetworkSendSystem] Recreate Writer {0} + {1} > {2}",
-                    writer.Length,
-                    message_lenght,
-                    writer.Capacity);
+                //Log.InfoEditor(
+                //    "[NetworkSendSystem] Recreate Writer {0} + {1} > {2}",
+                //    writer.Length,
+                //    message_lenght,
+                //    writer.Capacity);
 
                 //break;
 
