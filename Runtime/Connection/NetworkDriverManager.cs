@@ -12,6 +12,22 @@ namespace UnityNetworkLoop
 {
     public abstract class NetworkDriverManager : MonoBehaviour
     {
+        // PARAMS
+
+        [Range(1,2048)]
+        public int SendQueueCapacity = 32;
+
+        [Range(1, 2048)]
+        public int ReceiveQueueCapacity = 32;
+
+        [Range(1, 2000)]
+        public uint MaximumPayloadSize = 2000;
+
+        [Range(1, ReliableUtility.ParameterConstants.WindowSize)]
+        public int ReliableWindowSize = 32;
+
+        public bool EnableSimulation = false;
+
         // STATIC 
 
         public static NetworkDriverManager Current { get; private set; }
@@ -43,7 +59,19 @@ namespace UnityNetworkLoop
         {
             // TODO: limit connection count
 
-            var simulation = new SimulatorUtility.Parameters
+            var baseParams = new BaselibNetworkParameter
+            {
+                sendQueueCapacity = SendQueueCapacity,
+                receiveQueueCapacity = ReceiveQueueCapacity,
+                maximumPayloadSize = MaximumPayloadSize
+            };
+
+            var reliableParams = new ReliableUtility.Parameters
+            {
+                WindowSize = ReliableWindowSize
+            };
+
+            var simulationParams = new SimulatorUtility.Parameters
             {
                 MaxPacketSize = 1400,
                 MaxPacketCount = 30,
@@ -54,7 +82,11 @@ namespace UnityNetworkLoop
             };
 
             var settings = new NetworkSettings(Allocator.Temp);
-            //settings.AddRawParameterStruct(ref simulation);
+            settings.AddRawParameterStruct(ref baseParams);
+            settings.AddRawParameterStruct(ref reliableParams);
+
+            if (EnableSimulation)
+                settings.AddRawParameterStruct(ref simulationParams);
 
             Driver = NetworkDriver.Create(settings);
             UnreliablePipeline = Driver.CreatePipeline(typeof(SimulatorPipelineStage)); // Driver.CreatePipeline();
