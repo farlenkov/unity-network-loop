@@ -29,7 +29,7 @@ namespace UnityNetworkLoop
             if (message.Writer.HasFailedWrites)
             {
                 message.Data.Dispose();
-                Log.Error("[NetworkMessageList: Add] Message Has Failed Writes");
+                Log.Error("[NetworkMessageList: Add] Message Has Failed Writes '{0}'", message.EventID);
             }
             else
             {
