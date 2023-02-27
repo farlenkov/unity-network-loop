@@ -2,6 +2,7 @@
     "name": "Game.Network.Editor",
     "rootNamespace": "",
     "references": [
+        "GUID:b21f4b1d6baf90041aa6a65bca236026",
         "GUID:8e6ef6e32a8e9534c9c3929a90583d76",
         "GUID:5d12bd25872039a42ba0b67ecf0388db"
     ],
