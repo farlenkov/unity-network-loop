@@ -20,7 +20,7 @@ namespace UnityNetworkLoop
 
         protected override void OnUpdate()
         {
-            DisposeSendData_OnDestroyEvent();
+            //DisposeSendData_OnDestroyEvent();
             DestroyEntity_OnDestroyEvent();
 
             Loop.ConnectEvents.Clear();
@@ -29,17 +29,17 @@ namespace UnityNetworkLoop
 
         // DESTROY EVENT
 
-        void DisposeSendData_OnDestroyEvent()
-        {
-            Entities.ForEach((
-                SendData data,
-                in DestroyEvent destroy) =>
-            {
-                if (data.Data.IsCreated)
-                    data.Data.Dispose();
+        //void DisposeSendData_OnDestroyEvent()
+        //{
+        //    Entities.ForEach((
+        //        SendData data,
+        //        in DestroyEvent destroy) =>
+        //    {
+        //        if (data.Data.IsCreated)
+        //            data.Data.Dispose();
 
-            }).WithoutBurst().Run();
-        }
+        //    }).WithoutBurst().Run();
+        //}
 
         void DestroyEntity_OnDestroyEvent()
         {
@@ -58,19 +58,19 @@ namespace UnityNetworkLoop
 
         protected override void OnDestroy()
         {
-            DisposeSendData_OnDestroySystem();
+            //DisposeSendData_OnDestroySystem();
             DisposeEntityIndex_OnDestroySystem();
         }
 
-        void DisposeSendData_OnDestroySystem()
-        {
-            Entities.ForEach((SendData data) =>
-            {
-                if (data.Data.IsCreated)
-                    data.Data.Dispose();
+        //void DisposeSendData_OnDestroySystem()
+        //{
+        //    Entities.ForEach((SendData data) =>
+        //    {
+        //        if (data.Data.IsCreated)
+        //            data.Data.Dispose();
 
-            }).WithoutBurst().Run();
-        }
+        //    }).WithoutBurst().Run();
+        //}
 
         void DisposeEntityIndex_OnDestroySystem()
         {

@@ -11,11 +11,11 @@ using UnityUtility;
 
 namespace UnityNetworkLoop
 {
-    struct SendItem
-    {
-        public int LastSyncTime;
-        public SendData Data;
-    }
+    //struct SendItem
+    //{
+    //    public int LastSyncTime;
+    //    public SendData Data;
+    //}
 
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
@@ -27,7 +27,7 @@ namespace UnityNetworkLoop
 
         public NetworkSendSystem() { }
 
-        List<SendItem> SendItems = new List<SendItem>();
+        //List<SendItem> SendItems = new List<SendItem>();
         protected override GameLoopFuncList UpdateList => Loop.SyncUpdate;
 
         protected override void OnUpdate()
@@ -53,27 +53,34 @@ namespace UnityNetworkLoop
                 if (connection.GetState(driver) != NetworkConnection.State.Connected)
                     continue;
 
-                SortSendData(connection);
+                //SortSendData(connection);
 
                 var writer = default(DataStreamWriter);
 
                 Send(driver, connection, Loop.Net.ReliablePipeline, Loop.ReliableMessages, ref writer);
                 Send(driver, connection, Loop.Net.UnreliablePipeline, Loop.UnreliableMessages, ref writer);
-                Send(driver, connection, Loop.Net.UnreliablePipeline, ref writer);
+                //Send(driver, connection, Loop.Net.UnreliablePipeline, ref writer);
 
                 //sendCount++;
+
+                if (writer.IsCreated)
+                {
+                    Profiler.BeginSample("NetworkDriver.EndSend");
+                    driver.EndSend(writer);
+                    Profiler.EndSample();
+                }
             }
 
             //if (sendCount == 0 &&
             //    (Loop.UnreliableMessages.Count > 0 ||
             //    Loop.ReliableMessages.Count > 0))
             //{
-                //Log.Error(
-                //    "[NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
-                //    sendCount,
-                //    Loop.ReadyConnections.Count,
-                //    Loop.ReliableMessages.Count,
-                //    Loop.UnreliableMessages.Count);
+            //Log.Error(
+            //    "[NetworkSendSystem] sendCount: {0} ReadyConnections: {1} ReliableMessages: {2} UnreliableMessages: {3}",
+            //    sendCount,
+            //    Loop.ReadyConnections.Count,
+            //    Loop.ReliableMessages.Count,
+            //    Loop.UnreliableMessages.Count);
             //}
 
             ClearMessages(Loop.UnreliableMessages);
@@ -130,44 +137,44 @@ namespace UnityNetworkLoop
             }
         }
 
-        void Send(
-            NetworkDriver driver,
-            NetworkConnection connection,
-            NetworkPipeline pipeline,
-            ref DataStreamWriter writer)
-        {
-            for (var i = 0; i < SendItems.Count; i++)
-            {
-                var send = SendItems[i];
+        //void Send(
+        //    NetworkDriver driver,
+        //    NetworkConnection connection,
+        //    NetworkPipeline pipeline,
+        //    ref DataStreamWriter writer)
+        //{
+        //    for (var i = 0; i < SendItems.Count; i++)
+        //    {
+        //        var send = SendItems[i];
 
-                CheckAndInitWriter(
-                    send.Data.Length,
-                    driver,
-                    connection,
-                    pipeline,
-                    ref writer);
+        //        CheckAndInitWriter(
+        //            send.Data.Length,
+        //            driver,
+        //            connection,
+        //            pipeline,
+        //            ref writer);
 
-                Profiler.BeginSample("NativeArray<byte>.GetSubArray");
-                var sub_array = send.Data.Data.GetSubArray(0, send.Data.Length);
-                Profiler.EndSample();
+        //        Profiler.BeginSample("NativeArray<byte>.GetSubArray");
+        //        var sub_array = send.Data.Data.GetSubArray(0, send.Data.Length);
+        //        Profiler.EndSample();
 
-                Profiler.BeginSample("DataStreamWriter.WriteBytes");
-                writer.WriteBytes(sub_array);
-                Profiler.EndSample();
+        //        Profiler.BeginSample("DataStreamWriter.WriteBytes");
+        //        writer.WriteBytes(sub_array);
+        //        Profiler.EndSample();
 
-                if (!send.Data.SyncTickByConnection.ContainsKey(connection.InternalId))
-                    send.Data.SyncTickByConnection.Add(connection.InternalId, Loop.Tick);
-                else
-                    send.Data.SyncTickByConnection[connection.InternalId] = Loop.Tick;
-            }
+        //        if (!send.Data.SyncTickByConnection.ContainsKey(connection.InternalId))
+        //            send.Data.SyncTickByConnection.Add(connection.InternalId, Loop.Tick);
+        //        else
+        //            send.Data.SyncTickByConnection[connection.InternalId] = Loop.Tick;
+        //    }
 
-            if (writer.IsCreated)
-            {
-                Profiler.BeginSample("NetworkDriver.EndSend");
-                driver.EndSend(writer);
-                Profiler.EndSample(); 
-            }
-        }
+        //    if (writer.IsCreated)
+        //    {
+        //        Profiler.BeginSample("NetworkDriver.EndSend");
+        //        driver.EndSend(writer);
+        //        Profiler.EndSample(); 
+        //    }
+        //}
 
         void CheckAndInitWriter(
             int message_lenght,
@@ -204,37 +211,37 @@ namespace UnityNetworkLoop
             }
         }
 
-        void SortSendData(NetworkConnection connection)
-        {
-            SendItems.Clear();
+        //void SortSendData(NetworkConnection connection)
+        //{
+        //    SendItems.Clear();
 
-            Entities.ForEach((SendData send) =>
-            {
-                if (send.Length == 0)
-                    return;
+        //    Entities.ForEach((SendData send) =>
+        //    {
+        //        if (send.Length == 0)
+        //            return;
 
-                send.SyncTickByConnection.TryGetValue(connection.InternalId, out var sync_time);
+        //        send.SyncTickByConnection.TryGetValue(connection.InternalId, out var sync_time);
 
-                if (send.UpdateTick <= sync_time)
-                    return;
+        //        if (send.UpdateTick <= sync_time)
+        //            return;
 
-                SendItems.Add(new SendItem()
-                {
-                    LastSyncTime = sync_time,
-                    Data = send
-                });                
+        //        SendItems.Add(new SendItem()
+        //        {
+        //            LastSyncTime = sync_time,
+        //            Data = send
+        //        });                
 
-            }).WithoutBurst().Run();
+        //    }).WithoutBurst().Run();
 
-            Profiler.BeginSample("SendItems.Sort");
-            SendItems.Sort(Compare);
-            Profiler.EndSample();
-        }
+        //    Profiler.BeginSample("SendItems.Sort");
+        //    SendItems.Sort(Compare);
+        //    Profiler.EndSample();
+        //}
 
-        int Compare(SendItem item1, SendItem item2)
-        {
-            return item1.LastSyncTime.CompareTo(item2.LastSyncTime);
-        }
+        //int Compare(SendItem item1, SendItem item2)
+        //{
+        //    return item1.LastSyncTime.CompareTo(item2.LastSyncTime);
+        //}
 
         //protected override void OnUpdate()
         //{

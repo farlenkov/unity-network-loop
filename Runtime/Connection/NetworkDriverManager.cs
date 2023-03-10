@@ -26,6 +26,8 @@ namespace UnityNetworkLoop
         [Range(1, ReliableUtility.ParameterConstants.WindowSize)]
         public int ReliableWindowSize = 32;
 
+        public float KeepAliveInterval = 0.25f;
+
         public bool EnableSimulation = false;
 
         // STATIC 

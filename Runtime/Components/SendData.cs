@@ -8,29 +8,29 @@ using UnityEngine;
 
 namespace UnityNetworkLoop
 {
-    public class SendData : IComponentData
-    {
-        public int UpdateTick;
-        public NativeArray<byte> Data;
-        public DataStreamWriter Writer;
-        public int Length => Writer.IsCreated ? Writer.Length : 0;
-        public Dictionary<int, int> SyncTickByConnection;
+    //public class SendData : IComponentData
+    //{
+    //    public int UpdateTick;
+    //    public NativeArray<byte> Data;
+    //    public DataStreamWriter Writer;
+    //    public int Length => Writer.IsCreated ? Writer.Length : 0;
+    //    public Dictionary<int, int> SyncTickByConnection;
 
-        public void Init(int length, int tick = 0)
-        {
-            if (!Data.IsCreated)
-            {
-                Data = new NativeArray<byte>(length, Allocator.Persistent);
-                Writer = new DataStreamWriter(Data);
-                SyncTickByConnection = new Dictionary<int, int>();
-            }
-            else
-            {
-                Writer.Clear();
-            }
+    //    public void Init(int length, int tick = 0)
+    //    {
+    //        if (!Data.IsCreated)
+    //        {
+    //            Data = new NativeArray<byte>(length, Allocator.Persistent);
+    //            Writer = new DataStreamWriter(Data);
+    //            SyncTickByConnection = new Dictionary<int, int>();
+    //        }
+    //        else
+    //        {
+    //            Writer.Clear();
+    //        }
 
-            if (tick > 0)
-                UpdateTick = tick; // sugar for Init()
-        }
-    }
+    //        if (tick > 0)
+    //            UpdateTick = tick; // sugar for Init()
+    //    }
+    //}
 }

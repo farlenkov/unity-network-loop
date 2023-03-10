@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 using UnityGameLoop;
+using UnityEngine.PlayerLoop;
 
 namespace UnityNetworkLoop
 {
@@ -12,22 +13,24 @@ namespace UnityNetworkLoop
         /// Create entity with 'SendData' component and 'KeepAlive' message type.
         /// TODO: need to rework to send KeepAlive less often.
         /// </summary>
+        /// 
 
         public KeepAliveSendSystem() { }
 
+        float NextSendTime;
+
         protected override void Init()
-        {            
-            Loop.Start.Add(Start);
+        {
+            Loop.SyncUpdate.Add(Update);
         }
 
-        void Start(float dt)
+        void Update(float dt)
         {
-            var send = new SendData();
-            send.Init(2);
-            send.Writer.WriteID(NetworkMessageType.KeepAlive);
+            if (ElapsedTime < NextSendTime)
+                return;
 
-            var entity = EntityManager.CreateEntity(typeof(SendData));
-            EntityManager.SetComponentData(entity, send);
+            NextSendTime = ElapsedTime + Loop.Net.KeepAliveInterval;
+            Loop.UnreliableMessages.Add(NetworkMessageType.KeepAlive);
         }
     }
 }
