@@ -29,6 +29,9 @@ namespace UnityNetworkLoop
             if (gameObject == null || this == null)
                 return true;
 
+            if (NetworkDriverManager.Current.Connections.Length == 0)
+                return true;
+
             if (DisconnectCoroutine == null)
                 DisconnectCoroutine = StartCoroutine(Disconnect());
 
