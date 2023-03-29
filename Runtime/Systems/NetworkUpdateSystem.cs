@@ -8,15 +8,23 @@ namespace UnityNetworkLoop
 {
     public class NetworkUpdateSystem : GameLoopManager<NetworkLoop>
     {
+        bool UseSyncUpdate;
+
         /// <summary>
         /// Call Driver.ScheduleUpdate()
         /// </summary>
-        
-        public NetworkUpdateSystem() { }
+
+        public NetworkUpdateSystem(bool useSyncUpdate)
+        {
+            UseSyncUpdate = useSyncUpdate;
+        }
 
         protected override void Init()
         {
-            Loop.SyncUpdate.Add(Update);
+            if (UseSyncUpdate)
+                Loop.SyncUpdate.Add(Update);
+            else
+                Loop.Update.Add(Update);
         }
 
         void Update(float obj)
