@@ -37,7 +37,7 @@ namespace UnityNetworkLoop
 
         public List<NetworkConnection> ReadyConnections { get; private set; }
 
-        public NetworkLoop(GameLoopRunner loopRunner) : base(loopRunner)
+        public NetworkLoop(Transform rootTransform) : base(rootTransform)
         {
             Readers = new NetworkMessageReaderList();
             SyncUpdate = new GameLoopFuncList();
