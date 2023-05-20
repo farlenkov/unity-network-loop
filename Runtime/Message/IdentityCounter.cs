@@ -39,5 +39,11 @@ namespace UnityNetworkLoop
             if (id >= StartID && id <= EndID)
                 released_ids.Enqueue(id);
         }
+
+        public void Reset()
+        {
+            id_counter = StartID;
+            released_ids.Clear();
+        }
     }
 }
