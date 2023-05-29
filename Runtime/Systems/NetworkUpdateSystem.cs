@@ -19,7 +19,7 @@ namespace UnityNetworkLoop
             UseSyncUpdate = useSyncUpdate;
         }
 
-        protected override void Init()
+        protected override void OnInit()
         {
             if (UseSyncUpdate)
                 Loop.SyncUpdate.Add(Update);

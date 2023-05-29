@@ -19,7 +19,7 @@ namespace UnityNetworkLoop
 
         float NextSendTime;
 
-        protected override void Init()
+        protected override void OnInit()
         {
             Loop.SyncUpdate.Add(Update);
         }

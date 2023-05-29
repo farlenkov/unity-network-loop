@@ -12,7 +12,7 @@ namespace UnityNetworkLoop
         protected virtual ushort StartID => 0;
         protected virtual ushort EndID => 0;
 
-        protected override void Init()
+        protected override void OnInit()
         {
             if (EventID > 0)
                 Loop.Readers.Add(EventID, ReadMessage);

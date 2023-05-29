@@ -15,7 +15,7 @@ namespace UnityNetworkLoop
 
         public AcceptConnectionsSystem() { }
 
-        protected override void Init()
+        protected override void OnInit()
         {
             Loop.SyncUpdate.Add(Update);
         }

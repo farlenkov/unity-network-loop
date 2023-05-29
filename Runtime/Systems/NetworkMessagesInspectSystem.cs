@@ -16,7 +16,7 @@ namespace UnityNetworkLoop
 
         public static Action<NetworkLoop> SetNetworkLoop;
 
-        protected override void Init()
+        protected override void OnInit()
         {
             Loop.SyncUpdate.Add(Update);
         }

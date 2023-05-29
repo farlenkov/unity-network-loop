@@ -15,7 +15,7 @@ namespace UnityNetworkLoop
 
         public CleanupConnectionsSystem() { }
 
-        protected override void Init()
+        protected override void OnInit()
         {
             Loop.SyncUpdate.Add(Update);
         }
