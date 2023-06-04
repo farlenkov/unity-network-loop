@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityNetworkLoop;
 using Unity.Networking.Transport;
+using Unity.Collections;
 
 namespace UnityNetworkLoop
 {

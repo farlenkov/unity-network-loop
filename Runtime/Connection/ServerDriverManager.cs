@@ -12,7 +12,7 @@ namespace UnityNetworkLoop
         // TODO: separate port for every room
 
         public bool Listen(
-            NetworkEndPoint endpoint,
+            NetworkEndpoint endpoint,
             int max_connections)
         {
             if (Driver.Bind(endpoint) != 0)

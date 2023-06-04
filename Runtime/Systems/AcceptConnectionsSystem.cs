@@ -29,9 +29,9 @@ namespace UnityNetworkLoop
                 Loop.Net.Connections.Add(connection);
                 Loop.ConnectEvents.Add(connection);
 
-                Log.InfoEditor(
-                    "[AcceptConnectionsSystem] Loop.Connected.Add() - {0}",
-                    connection.InternalId);
+                // Log.InfoEditor(
+                //     "[AcceptConnectionsSystem] Loop.Connected.Add() - {0}",
+                //     connection.InternalId);
             }
         }
     }
