@@ -70,7 +70,9 @@ namespace UnityNetworkLoop
 
             var reliableParams = new ReliableUtility.Parameters
             {
-                WindowSize = ReliableWindowSize
+                WindowSize = ReliableWindowSize,
+                MinimumResendTime = 64,
+                MaximumResendTime = 400
             };
 
             var simulationParams = new SimulatorUtility.Parameters
