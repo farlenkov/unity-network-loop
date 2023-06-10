@@ -17,9 +17,9 @@ namespace UnityNetworkLoop
             list = new List<NetworkMessage>(100);
         }
 
-        public void Add(ushort event_id)
+        public void Add(ushort eventId)
         {
-            Add (NetworkMessage.Create(event_id));
+            Add(NetworkMessage.Create(eventId));
         }
 
         public void Add(NetworkMessage message)

@@ -7,29 +7,31 @@ namespace UnityNetworkLoop
 {
     public class IdentityCounter
     {
-        ushort id_counter;
-        Queue<ushort> released_ids;
+        ushort idCounter;
+        Queue<ushort> releasedIds;
 
         public ushort StartID { get; private set; }
         public ushort EndID { get; private set; }
 
         public IdentityCounter(
-            ushort start_id, 
-            ushort end_id)
+            ushort startId,
+            ushort endId)
         {
-            StartID = start_id;
-            EndID = end_id;
+            StartID = startId;
+            EndID = endId;
 
-            id_counter = start_id;
-            released_ids = new Queue<ushort>(EndID - StartID);
+            idCounter = startId;
+            releasedIds = new Queue<ushort>(EndID - StartID);
         }
 
         public ushort GetID()
         {
-            if (id_counter < EndID)
-                return id_counter++;
-            else if (released_ids.Count > 0)
-                return released_ids.Dequeue();
+            if (idCounter < EndID)
+                return idCounter++;
+
+            else if (releasedIds.Count > 0)
+                return releasedIds.Dequeue();
+
             else
                 throw new Exception(string.Format("[EntityCounter: GetID] No free IDs in range {0}-{1}", StartID, EndID));
         }
@@ -37,13 +39,13 @@ namespace UnityNetworkLoop
         public void ReleaseID(ushort id)
         {
             if (id >= StartID && id <= EndID)
-                released_ids.Enqueue(id);
+                releasedIds.Enqueue(id);
         }
 
         public void Reset()
         {
-            id_counter = StartID;
-            released_ids.Clear();
+            idCounter = StartID;
+            releasedIds.Clear();
         }
     }
 }

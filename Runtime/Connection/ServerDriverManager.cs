@@ -13,7 +13,7 @@ namespace UnityNetworkLoop
 
         public bool Listen(
             NetworkEndpoint endpoint,
-            int max_connections)
+            int maxConnections)
         {
             if (Driver.Bind(endpoint) != 0)
             {
@@ -23,10 +23,10 @@ namespace UnityNetworkLoop
             else
             {
                 var result = Driver.Listen();
-                CreateConnections(max_connections);
+                CreateConnections(maxConnections);
 
                 return result == 0;
             }
-        }    
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace UnityNetworkLoop
         protected override void ReadMessage(
             ref NetworkConnection connection,
             ref DataStreamReader reader,
-            ushort event_id)
+            ushort eventId)
         {
             // keep me empty
             // id is the only data we get in this message

@@ -70,7 +70,7 @@ namespace UnityNetworkLoop
         }
 
         void Send(
-            NetworkDriver driver, 
+            NetworkDriver driver,
             NetworkConnection connection,
             NetworkPipeline pipeline,
             NetworkMessageList messages,
@@ -92,17 +92,17 @@ namespace UnityNetworkLoop
                     ref writer);
 
                 Profiler.BeginSample("NativeArray<byte>.GetSubArray");
-                var sub_array = message.Data.GetSubArray(0, message.Length);
+                var subArray = message.Data.GetSubArray(0, message.Length);
                 Profiler.EndSample();
 
                 Profiler.BeginSample("DataStreamWriter.WriteBytes");
-                writer.WriteBytes(sub_array);
+                writer.WriteBytes(subArray);
                 Profiler.EndSample();
             }
         }
 
         void CheckAndInitWriter(
-            int message_lenght,
+            int messageLenght,
             NetworkDriver driver,
             NetworkConnection connection,
             NetworkPipeline pipeline,
@@ -116,7 +116,7 @@ namespace UnityNetworkLoop
                 return;
             }
 
-            if (message_lenght > writer.Capacity - writer.Length)
+            if (messageLenght > writer.Capacity - writer.Length)
             {
                 Profiler.BeginSample("NetworkDriver.EndSend");
                 driver.EndSend(writer);

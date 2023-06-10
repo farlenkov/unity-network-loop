@@ -53,10 +53,10 @@ namespace UnityNetworkLoop
 
         void UpdateCounters(
             NetworkMessageList messages,
-            ref Dictionary<ushort, Counter> max_counters)
+            ref Dictionary<ushort, Counter> maxCounters)
         {
-            if (max_counters == null)
-                max_counters = new Dictionary<ushort, Counter>();
+            if (maxCounters == null)
+                maxCounters = new Dictionary<ushort, Counter>();
 
             DictionaryExt.Reset(ref TempCounters);
             DictionaryExt.Reset(ref TempSizes);
@@ -77,25 +77,25 @@ namespace UnityNetworkLoop
                     TempSizes[message.EventID] = message.Length;
             }
 
-            foreach (var current_counter in TempCounters)
+            foreach (var currentCounter in TempCounters)
             {
-                var messageId = current_counter.Key;
-                var messageCount = current_counter.Value;
+                var messageId = currentCounter.Key;
+                var messageCount = currentCounter.Value;
 
-                if (!max_counters.TryGetValue(messageId, out var max_counter))
-                    max_counters.Add(messageId, new Counter() { Count = messageCount });
+                if (!maxCounters.TryGetValue(messageId, out var max_counter))
+                    maxCounters.Add(messageId, new Counter() { Count = messageCount });
                 else
                     if (max_counter.Count < messageCount)
                     max_counter.Count = messageCount;
             }
 
-            foreach (var current_counter in TempSizes)
+            foreach (var currentCounter in TempSizes)
             {
-                var messageId = current_counter.Key;
-                var messageSize = current_counter.Value;
+                var messageId = currentCounter.Key;
+                var messageSize = currentCounter.Value;
 
-                if (!max_counters.TryGetValue(messageId, out var max_counter))
-                    max_counters.Add(messageId, new Counter() { Size = messageSize });
+                if (!maxCounters.TryGetValue(messageId, out var max_counter))
+                    maxCounters.Add(messageId, new Counter() { Size = messageSize });
                 else
                     if (max_counter.Size < messageSize)
                     max_counter.Size = messageSize;

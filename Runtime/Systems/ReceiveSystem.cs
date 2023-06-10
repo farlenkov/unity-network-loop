@@ -24,6 +24,6 @@ namespace UnityNetworkLoop
         protected abstract void ReadMessage(
             ref NetworkConnection connection,
             ref DataStreamReader reader,
-            ushort entity_id);
+            ushort entityId);
     }
 }

@@ -16,17 +16,17 @@ namespace UnityNetworkLoop
 
         public ushort EventID { get; private set; }
 
-        public static NetworkMessage Create(ushort event_id, int length = 2)
+        public static NetworkMessage Create(ushort eventId, int length = 2)
         {
             var message = new NetworkMessage();
             message.Data = new NativeArray<byte>(length, Allocator.Persistent);
             message.Writer = new DataStreamWriter(message.Data);
-            message.EventID = event_id;
+            message.EventID = eventId;
 
-            if (event_id > 0)
-                message.Writer.WriteID(event_id);
+            if (eventId > 0)
+                message.Writer.WriteID(eventId);
             else
-                throw new ArgumentException(string.Format("[NetworkMessage: Create] event_id need to be greater than 0. Current value: {0}", event_id));
+                throw new ArgumentException(string.Format("[NetworkMessage: Create] event_id need to be greater than 0. Current value: {0}", eventId));
 
             return message;
         }

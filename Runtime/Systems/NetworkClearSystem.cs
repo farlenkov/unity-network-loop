@@ -45,10 +45,10 @@ namespace UnityNetworkLoop
         {
             Entities.ForEach((
                 Entity entity,
-                in EntityID entity_id,
+                in EntityID entityId,
                 in DestroyEvent destroy) =>
             {
-                Loop.EntityIndex.Remove(entity_id.id);
+                Loop.EntityIndex.Remove(entityId.id);
                 EntityManager.DestroyEntity(entity);
 
             }).WithStructuralChanges().Run();

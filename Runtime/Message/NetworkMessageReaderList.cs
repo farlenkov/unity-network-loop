@@ -7,40 +7,40 @@ namespace UnityNetworkLoop
 {
     public class NetworkMessageReaderList
     {
-        Dictionary<ushort, NetworkMessageReaderCallback> event_readers;
-        List<NetworkMessageReader> entity_readers;
+        Dictionary<ushort, NetworkMessageReaderCallback> eventReaders;
+        List<NetworkMessageReader> entityReaders;
 
         public NetworkMessageReaderList()
         {
-            event_readers = new Dictionary<ushort, NetworkMessageReaderCallback>();
-            entity_readers = new List<NetworkMessageReader>();
+            eventReaders = new Dictionary<ushort, NetworkMessageReaderCallback>();
+            entityReaders = new List<NetworkMessageReader>();
         }
 
         public void Add(
-            ushort event_id,
+            ushort eventId,
             NetworkMessageReaderCallback callback)
         {
-            if (event_id < 1 || event_id > 254)
+            if (eventId < 1 || eventId > 254)
                 throw new Exception("[NetworkMessageReaderList: Add] Event ID must be in range 1-254");
             else
-                event_readers.Add(event_id, callback);
+                eventReaders.Add(eventId, callback);
         }
 
         public void Add(
-            ushort start_id,
-            ushort end_id,
+            ushort startId,
+            ushort endId,
             NetworkMessageReaderCallback callback)
         {
-            if (start_id <= 255)
+            if (startId <= 255)
                 throw new Exception("[NetworkMessageReaderList: Add] Start ID must greater than 255");
 
-            if (start_id >= end_id)
+            if (startId >= endId)
                 throw new Exception("[NetworkMessageReaderList: Add] Start ID must be less than End ID");
 
-            entity_readers.Add(new NetworkMessageReader()
+            entityReaders.Add(new NetworkMessageReader()
             {
-                StartID = start_id,
-                EndID = end_id,
+                StartID = startId,
+                EndID = endId,
                 Callback = callback
             });
         }
@@ -49,14 +49,14 @@ namespace UnityNetworkLoop
         {
             if (id <= 254)
             {
-                if (event_readers.TryGetValue(id, out var callback))
+                if (eventReaders.TryGetValue(id, out var callback))
                     return callback;
             }
             else
             {
-                for (var i = 0; i < entity_readers.Count; i++)
+                for (var i = 0; i < entityReaders.Count; i++)
                 {
-                    var reader = entity_readers[i];
+                    var reader = entityReaders[i];
 
                     if (reader.StartID <= id &&
                         reader.EndID >= id)

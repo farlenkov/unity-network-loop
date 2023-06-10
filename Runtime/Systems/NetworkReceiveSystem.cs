@@ -29,11 +29,11 @@ namespace UnityNetworkLoop
         }
 
         void OnNetworkEvent(
-            NetworkEvent.Type event_type,
+            NetworkEvent.Type eventType,
             NetworkConnection connection,
             DataStreamReader reader)
         {
-            switch (event_type)
+            switch (eventType)
             {
                 case NetworkEvent.Type.Data:
                     Read(connection, reader);
@@ -54,16 +54,16 @@ namespace UnityNetworkLoop
             while (reader.GetBytesRead() < reader.Length)
             {
                 var id = reader.ReadID();
-                var reader_func = readers.GetReader(id);
+                var readerFunc = readers.GetReader(id);
 
-                if (reader_func == null)
+                if (readerFunc == null)
                 {
                     Log.Error("[NetworkReceiveSystem] Can't find NetworkMessageReader for message ID {0} GetBytesRead: {1}", id, reader.GetBytesRead());
                     break;
                 }
 
                 //Log.InfoEditor("[NetworkReceiveSystem] Received message ID {0}", id);
-                reader_func(ref connection, ref reader, id);
+                readerFunc(ref connection, ref reader, id);
             }
         }
 
