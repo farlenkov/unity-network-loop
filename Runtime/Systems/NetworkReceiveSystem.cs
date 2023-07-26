@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Networking.Transport;
+using Unity.Collections;
 using UnityEngine;
 using UnityGameLoop;
 using UnityUtility;
@@ -70,7 +71,7 @@ namespace UnityNetworkLoop
         {
             Log.InfoEditor(
                 "[NetworkReceiveSystem] Loop.Disconnected.Add() - {0}",
-                connection.InternalId);
+                connection);
 
             Loop.DisconnectEvents.Add(connection);
         }

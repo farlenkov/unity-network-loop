@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Networking.Transport;
+using Unity.Collections;
 using UnityEngine.Profiling;
 using System;
 using Unity.Networking.Transport.Utilities;
@@ -14,7 +15,7 @@ namespace UnityNetworkLoop
     {
         // PARAMS
 
-        [Range(1,2048)]
+        [Range(1, 2048)]
         public int SendQueueCapacity = 32;
 
         [Range(1, 2048)]
@@ -23,7 +24,7 @@ namespace UnityNetworkLoop
         [Range(1, 2000)]
         public uint MaximumPayloadSize = 2000;
 
-        [Range(1, ReliableUtility.ParameterConstants.WindowSize)]
+        [Range(1, 64)]
         public int ReliableWindowSize = 32;
 
         public float KeepAliveInterval = 0.25f;
@@ -121,7 +122,7 @@ namespace UnityNetworkLoop
                     switch (cmd)
                     {
                         case NetworkEvent.Type.Connect:
-                            Log.Info("[NetworkDriverManager: ReadEvents] Connected {0}", connection.InternalId);
+                            Log.Info("[NetworkDriverManager: ReadEvents] Connected {0}", connection);
                             callback(cmd, connection, default);
                             break;
 
@@ -129,11 +130,11 @@ namespace UnityNetworkLoop
                             if (reader.IsCreated)
                                 callback(cmd, connection, reader);
                             else
-                                Log.Error("[NetworkDriverManager: ReadEvents] Data {0} / reader.IsCreated == false", connection.InternalId); // ?
+                                Log.Error("[NetworkDriverManager: ReadEvents] Data {0} / reader.IsCreated == false", connection); // ?
                             break;
 
                         case NetworkEvent.Type.Disconnect:
-                            Log.Info("[NetworkDriverManager: ReadEvents] Disconnected {0}", connection.InternalId);
+                            Log.Info("[NetworkDriverManager: ReadEvents] Disconnected {0}", connection);
                             callback(cmd, connection, default);
                             Connections.RemoveAtSwapBack(i);
                             i--;
@@ -160,7 +161,7 @@ namespace UnityNetworkLoop
                     writer.WriteID(NetworkMessageType.Disconnect);
                     Driver.EndSend(writer);
 
-                    Log.InfoEditor("[NetworkDriverManager: Disconnect] connection: {0}", connection.InternalId);
+                    Log.InfoEditor("[NetworkDriverManager: Disconnect] connection: {0}", connection);
                     connection.Disconnect(Driver);
                 }
             }

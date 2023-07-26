@@ -47,7 +47,7 @@ namespace UnityNetworkLoop
 
                 Log.InfoEditor(
                     "[CleanUpConnectionsSystem] Loop.Disconnected.Add() - {0}",
-                    connection.InternalId);
+                    connection);
             }
         }
     }

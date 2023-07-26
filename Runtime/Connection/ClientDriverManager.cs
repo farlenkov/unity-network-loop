@@ -9,7 +9,13 @@ namespace UnityNetworkLoop
 {
     public class ClientDriverManager : NetworkDriverManager
     {
-        public NetworkConnection Connect(NetworkEndPoint endpoint)
+        public NetworkConnection Connect(
+#if UNITY_2022_3_OR_NEWER
+            NetworkEndpoint endpoint
+#else
+            NetworkEndPoint endpoint
+#endif
+            )
         {
             var connection = Driver.Connect(endpoint);
 

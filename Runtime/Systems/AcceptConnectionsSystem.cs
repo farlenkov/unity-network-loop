@@ -31,7 +31,7 @@ namespace UnityNetworkLoop
 
                 Log.InfoEditor(
                     "[AcceptConnectionsSystem] Loop.Connected.Add() - {0}",
-                    connection.InternalId);
+                    connection);
             }
         }
     }
