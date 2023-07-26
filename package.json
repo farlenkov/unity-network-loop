@@ -1,6 +1,6 @@
 {
-  "name": "com.farlenkov.network",
-  "displayName": "GAME / NETWORK",
+  "name": "com.farlenkov.unity-network",
+  "displayName": "UNITY / NETWORK",
   "version": "1.0.0",
   "unity": "2020.3",
   "description": "Network",
